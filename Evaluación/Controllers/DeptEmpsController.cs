@@ -78,7 +78,7 @@ namespace Evaluación.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["EmpNo"] = new SelectList(_context.Employees.Where(e => e.Activo), "EmpNo", "FirstName", deptEmp.EmpNo);
+            ViewData["EmpNo"] = new SelectList(_context.Employees.Where(e => e.Activo), "EmpNo", "Ci", deptEmp.EmpNo);
             ViewData["DeptNo"] = new SelectList(_context.Departments.Where(d => d.Activo), "DeptNo", "DeptName", deptEmp.DeptNo);
 
             return View(deptEmp);

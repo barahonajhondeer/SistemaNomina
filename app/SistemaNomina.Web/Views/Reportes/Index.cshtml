@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Reportes";
+}
+
+<h1>Reportes del Sistema de Nómina</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <h5>Nómina Vigente</h5>
+            </div>
+            <div class="card-body">
+                <p>Consulta la nómina actual de todos los empleados o filtrada por departamento.</p>
+                <p><strong>Información:</strong> Empleados, cargos, salarios actuales.</p>
+            </div>
+            <div class="card-footer">
+                <a asp-action="NominaVigente" class="btn btn-primary">Ver Reporte</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white">
+                <h5>Cambios Salariales</h5>
+            </div>
+            <div class="card-body">
+                <p>Historial de cambios de salario en un rango de fechas.</p>
+                <p><strong>Información:</strong> Fecha, usuario, salario anterior y nuevo.</p>
+            </div>
+            <div class="card-footer">
+                <a asp-action="CambiosSalariales" class="btn btn-success">Ver Reporte</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-info text-white">
+                <h5>Estructura Organizacional</h5>
+            </div>
+            <div class="card-body">
+                <p>Organigrama de la empresa por departamentos.</p>
+                <p><strong>Información:</strong> Gerentes, empleados por departamento.</p>
+            </div>
+            <div class="card-footer">
+                <a asp-action="EstructuraOrganizacional" class="btn btn-info">Ver Reporte</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-info">
+            <strong>Nota:</strong> Puedes filtrar cada reporte por departamento y rango de fechas según corresponda.
+        </div>
+    </div>
+</div>

@@ -1,15 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Evaluación.Models;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace Evaluación.Models
+namespace SistemaNomina.Web.Models
 {
     public class Department
     {
         [Key]
-        public string DeptNo { get; set; }
+        [StringLength(10)]
+        public string dept_no { get; set; }
 
-        [Required]
-        public string DeptName { get; set; }
+        [Required(ErrorMessage = "El nombre del departamento es obligatorio")]
+        [StringLength(100)]
+        [Display(Name = "Nombre del Departamento")]
+        public string dept_name { get; set; }
 
-        public bool Activo { get; set; } = true;
+        // Relaciones
+        public virtual ICollection<DeptEmp> DeptEmps { get; set; }
+        public virtual ICollection<DeptManager> DeptManagers { get; set; }
     }
 }

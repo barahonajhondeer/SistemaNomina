@@ -1,0 +1,76 @@
+﻿@model SistemaNomina.Web.ViewModels.SalaryViewModel
+
+@{
+    ViewData["Title"] = "Nuevo Salario";
+}
+
+<h1>Nuevo Salario</h1>
+
+<hr />
+
+<!-- Mostrar errores -->
+@if (!ViewData.ModelState.IsValid)
+{
+    var errores = ViewData.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).Distinct().ToList();
+    if (errores.Any())
+    {
+        <div class="alert alert-danger">
+            <strong>Por favor corrija los siguientes errores:</strong>
+            <ul>
+                @foreach (var error in errores)
+                {
+                    <li>@error</li>
+                }
+            </ul>
+        </div>
+    }
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="emp_no" class="control-label">Empleado</label>
+                <select asp-for="emp_no" class="form-control" asp-items='new SelectList(ViewBag.Empleados, "emp_no", "nombre")'>
+                    <option value="">-- Seleccione un empleado --</option>
+                </select>
+                <span asp-validation-for="emp_no" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="salary" class="control-label">Salario</label>
+                <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input asp-for="salary" class="form-control" type="number" step="0.01" min="0" />
+                </div>
+                <span asp-validation-for="salary" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="from_date" class="control-label">Fecha Inicio</label>
+                <input asp-for="from_date" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="from_date" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="to_date" class="control-label">Fecha Fin</label>
+                <input asp-for="to_date" class="form-control" type="date" />
+                <span asp-validation-for="to_date" class="text-danger"></span>
+                <small class="form-text text-muted">Dejar vacío si es el salario actual</small>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

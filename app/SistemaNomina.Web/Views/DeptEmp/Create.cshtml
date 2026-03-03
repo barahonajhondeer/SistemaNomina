@@ -1,0 +1,80 @@
+﻿@model SistemaNomina.Web.ViewModels.DeptEmpViewModel
+
+@{
+    ViewData["Title"] = "Nueva Asignación";
+}
+
+<h1>Nueva Asignación a Departamento</h1>
+
+<hr />
+
+<!-- Mostrar errores del modelo -->
+@if (!ViewData.ModelState.IsValid)
+{
+    var errores = ViewData.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).Distinct().ToList();
+    if (errores.Any())
+    {
+        <div class="alert alert-danger">
+            <strong>Por favor corrija los siguientes errores:</strong>
+            <ul>
+                @foreach (var error in errores)
+                {
+                    <li>@error</li>
+                }
+            </ul>
+        </div>
+    }
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Campo EMPLEADO -->
+            <div class="form-group mb-3">
+                <label asp-for="emp_no" class="control-label">Empleado</label>
+                <select asp-for="emp_no" class="form-control" asp-items='new SelectList(ViewBag.Empleados, "emp_no", "nombre")'>
+                    <option value="">-- Seleccione un empleado --</option>
+                </select>
+                <span asp-validation-for="emp_no" class="text-danger"></span>
+            </div>
+
+            <!-- Campo DEPARTAMENTO -->
+            <div class="form-group mb-3">
+                <label asp-for="dept_no" class="control-label">Departamento</label>
+                <select asp-for="dept_no" class="form-control" asp-items='new SelectList(ViewBag.Departamentos, "dept_no", "nombre")'>
+                    <option value="">-- Seleccione un departamento --</option>
+                </select>
+                <span asp-validation-for="dept_no" class="text-danger"></span>
+            </div>
+
+            <!-- Campo FECHA INICIO -->
+            <div class="form-group mb-3">
+                <label asp-for="from_date" class="control-label"></label>
+                <input asp-for="from_date" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="from_date" class="text-danger"></span>
+            </div>
+
+            <!-- Campo FECHA FIN -->
+            <div class="form-group mb-3">
+                <label asp-for="to_date" class="control-label"></label>
+                <input asp-for="to_date" class="form-control" type="date" />
+                <span asp-validation-for="to_date" class="text-danger"></span>
+                <small class="form-text text-muted">Dejar vacío si es la asignación actual</small>
+            </div>
+
+            <!-- Botones -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

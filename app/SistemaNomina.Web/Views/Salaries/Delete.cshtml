@@ -1,0 +1,55 @@
+﻿@model SistemaNomina.Web.Models.Salary
+
+@{
+    ViewData["Title"] = "Eliminar Salario";
+}
+
+<h1>Eliminar Salario</h1>
+
+<div class="alert alert-danger">
+    <h3>¿Está seguro que desea eliminar este salario?</h3>
+    <p>Esta acción no se puede deshacer y quedará registrada en la auditoría.</p>
+</div>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Empleado
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Employee?.first_name @Model.Employee?.last_name
+        </dd>
+
+        <dt class="col-sm-2">
+            Salario
+        </dt>
+        <dd class="col-sm-10">
+            @Model.salary.ToString("C2")
+        </dd>
+
+        <dt class="col-sm-2">
+            Fecha Inicio
+        </dt>
+        <dd class="col-sm-10">
+            @Model.from_date.ToShortDateString()
+        </dd>
+
+        <dt class="col-sm-2">
+            Fecha Fin
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.to_date?.ToShortDateString() ?? "Activo")
+        </dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" name="emp_no" value="@Model.emp_no" />
+        <input type="hidden" name="from_date" value="@Model.from_date" />
+
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

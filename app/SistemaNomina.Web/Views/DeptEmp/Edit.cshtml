@@ -1,0 +1,84 @@
+﻿@model SistemaNomina.Web.ViewModels.DeptEmpViewModel
+
+@{
+    ViewData["Title"] = "Editar Asignación";
+}
+
+<h1>Editar Asignación a Departamento</h1>
+
+<hr />
+
+<!-- Mostrar errores (solo una vez) -->
+@if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.SelectMany(v => v.Errors).Any())
+{
+    <div class="alert alert-danger">
+        <strong>Errores:</strong>
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+            <!-- Token antifalsificación -->
+            @Html.AntiForgeryToken()
+
+            <!-- Campos ocultos con la clave compuesta -->
+            <input type="hidden" asp-for="emp_no" />
+            <input type="hidden" asp-for="dept_no" />
+            <input type="hidden" asp-for="from_date" />
+            <input type="hidden" asp-for="EmpleadoNombre" />
+            <input type="hidden" asp-for="DepartamentoNombre" />
+
+            <!-- SOLO MOSTRAR INFORMACIÓN (no editable) -->
+            <div class="form-group mb-3">
+                <label class="control-label">Empleado</label>
+                <input class="form-control" value="@Model.EmpleadoNombre" readonly disabled />
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">Departamento</label>
+                <input class="form-control" value="@Model.DepartamentoNombre" readonly disabled />
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">Fecha Inicio</label>
+                <input class="form-control" value="@Model.from_date.ToShortDateString()" readonly disabled />
+            </div>
+
+            <!-- ÚNICO CAMPO EDITABLE: Fecha Fin -->
+            <div class="form-group mb-3">
+                <label asp-for="to_date" class="control-label">Fecha Fin</label>
+                <input asp-for="to_date" class="form-control" type="date" />
+                <span asp-validation-for="to_date" class="text-danger"></span>
+                <small class="form-text text-muted">
+                    @if (Model.to_date == null)
+                    {
+                        <text>Asignación activa. Ingrese una fecha para finalizarla.</text>
+                    }
+                    else
+                    {
+                        <text>Asignación finalizada. Puede cambiar la fecha o dejarla vacía para reactivar.</text>
+                    }
+                </small>
+            </div>
+
+            <!-- Botones -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

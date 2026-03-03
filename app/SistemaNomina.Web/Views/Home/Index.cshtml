@@ -1,0 +1,70 @@
+﻿@using System.Security.Claims
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Bienvenido al Sistema de Nómina</h1>
+    <p class="lead">Sistema de gestión de empleados, departamentos y nómina</p>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">
+                <h5>Empleados</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Gestión completa de empleados: alta, baja, modificación y consulta.</p>
+                <a asp-controller="Employees" asp-action="Index" class="btn btn-light">Ir a Empleados</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">
+                <h5>Reportes</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Generación de reportes de nómina y estructura organizacional.</p>
+                <a asp-controller="Reportes" asp-action="Index" class="btn btn-light">Ir a Reportes</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">
+                <h5>Departamentos</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Generación de reportes de nómina y estructura organizacional.</p>
+                <a asp-controller="Departments" asp-action="Index" class="btn btn-light">Ir a Departamentos</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-warning">
+                <h5>Resumen</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Total Empleados:</strong> @ViewBag.TotalEmpleados</p>
+                <p><strong>Total Departamentos:</strong> @ViewBag.TotalDepartamentos</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h5>Últimos Accesos</h5>
+            </div>
+            <div class="card-body">
+                <p>Bienvenido, @User.Identity.Name</p>
+                <p>Rol: @User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+﻿@model SistemaNomina.Web.Models.Employee
+
+@{
+    ViewData["Title"] = "Crear Empleado";
+}
+
+<h1>Crear Empleado</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <!-- 👇 ESTE ES EL FORMULARIO -->
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ci" class="control-label">Cédula</label>
+                <input asp-for="ci" class="form-control" />
+                <span asp-validation-for="ci" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="first_name" class="control-label">Primer Nombre</label>
+                <input asp-for="first_name" class="form-control" />
+                <span asp-validation-for="first_name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="last_name" class="control-label">Primer Apellido</label>
+                <input asp-for="last_name" class="form-control" />
+                <span asp-validation-for="last_name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="birth_date" class="control-label">Fecha de Nacimiento</label>
+                <input asp-for="birth_date" class="form-control" type="date" />
+                <span asp-validation-for="birth_date" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="gender" class="control-label">Género</label>
+                <select asp-for="gender" class="form-control">
+                    <option value="">-- Seleccione --</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                </select>
+                <span asp-validation-for="gender" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="hire_date" class="control-label">Fecha de Contratación</label>
+                <input asp-for="hire_date" class="form-control" type="date" />
+                <span asp-validation-for="hire_date" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="correo" class="control-label">Correo Electrónico</label>
+                <input asp-for="correo" class="form-control" type="email" />
+                <span asp-validation-for="correo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Crear</button>
+                <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+            </div>
+        </form>
+        <!-- 👆 FIN DEL FORMULARIO -->
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

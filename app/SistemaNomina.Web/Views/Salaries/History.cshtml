@@ -1,0 +1,43 @@
+﻿@model IEnumerable<SistemaNomina.Web.Models.LogAuditoriaSalario>
+
+@{
+    ViewData["Title"] = "Historial de Salarios";
+}
+
+<h1>Historial de Cambios Salariales</h1>
+<h4>Empleado: @ViewBag.EmpleadoNombre</h4>
+
+<hr />
+
+<p>
+    <a asp-action="Index" class="btn btn-secondary">Volver a Salarios</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Detalle del Cambio</th>
+            <th>Salario</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.fechaActualizacion.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@item.usuario</td>
+                <td>@item.DetalleCambio</td>
+                <td>@item.salario.ToString("C2")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No hay registros de auditoría para este empleado.
+    </div>
+}
