@@ -1,0 +1,35 @@
+## Ignorar archivos de Visual Studio
+.vs/
+.vs/config/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Ignorar archivos de compilación
+bin/
+obj/
+packages/
+*.dll
+*.exe
+*.pdb
+
+## Ignorar archivos de configuración local
+appsettings.Development.json
+appsettings.Production.json
+
+## Ignorar base de datos local
+*.mdf
+*.ldf
+
+## Ignorar archivos de usuario
+*.dbmdl
+*.jfm
+*.db
+
+## Ignorar archivos de logs
+logs/
+*.log
+
+## Ignorar carpeta de migraciones (ya las moviste a /db)
+app/SistemaNomina.Web/Migrations/
