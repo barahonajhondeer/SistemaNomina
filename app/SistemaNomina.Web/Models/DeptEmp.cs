@@ -25,4 +25,16 @@ namespace SistemaNomina.Web.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Fecha Fin")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", 
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
+
+ApplyFormatInEditMode = true)]
+        public DateTime? to_date { get; set; }  // Nullable = vigente actualmente
+
+        // Relaciones
+        [ForeignKey("emp_no")]
+        public virtual Employee Employee { get; set; }
+
+        [ForeignKey("dept_no")]
+        public virtual Department Department { get; set; }
+    }
+}
