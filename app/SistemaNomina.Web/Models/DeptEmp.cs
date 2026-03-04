@@ -10,3 +10,9 @@ namespace SistemaNomina.Web.Models
         [Column(Order = 1)]
         [Display(Name = "Número de Empleado")]
         public int emp_no { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        [StringLength(10)]
+        [Display(Name = "Código de Departamento")]
+        public string dept_no { get; set; } = string.Empty;
