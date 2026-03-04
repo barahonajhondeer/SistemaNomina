@@ -1,22 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaNomina.Web.Data;
 using SistemaNomina.Web.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SistemaNomina.Web.Controllers
 {
     [Authorize(Roles = "Administrador,RRHH")]
-    public class DepartmentsController : Controller
+    public class DeptEmntsController : Controller
     {
         private readonly AppDbContext _context;
 
-        public DepartmentsController(AppDbContext context)
+        // CONSTRUCTOR ÚNICO
+        public DeptEmntsController(AppDbContext context)
         {
             _context = context;
         }
@@ -29,14 +27,16 @@ namespace SistemaNomina.Web.Controllers
             var departments = from d in _context.Departments
                               select d;
 
+            // BÚSQUEDA POR NOMBRE O CÓDIGO
             if (!string.IsNullOrEmpty(searchString))
             {
                 departments = departments.Where(d =>
-                    d.dept_no.Contains(searchString) ||
-                    d.dept_name.Contains(searchString));
+                    d.dept_name.Contains(searchString) ||
+                    d.dept_no.Contains(searchString));
             }
 
             int totalDepartments = await departments.CountAsync();
+
             var items = await departments
                 .OrderBy(d => d.dept_name)
                 .Skip((page - 1) * pageSize)
@@ -47,80 +47,71 @@ namespace SistemaNomina.Web.Controllers
             ViewBag.TotalPages = (int)System.Math.Ceiling(totalDepartments / (double)pageSize);
             ViewBag.SearchString = searchString;
 
-            return View(items);
+            return View(items);  // 👈 ESTO FALTABA
         }
-        // GET: DeptEmps/Details/5
-        public async Task<IActionResult> Details(int? id)
+
+        // GET: Departments/Details/5
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var deptEmp = await _context.DeptEmps
-                .Include(d => d.Department)
-                .Include(d => d.Employee)
-                .FirstOrDefaultAsync(m => m.emp_no == id);
-            if (deptEmp == null)
+            var department = await _context.Departments
+                .FirstOrDefaultAsync(m => m.dept_no == id);
+
+            if (department == null)
             {
                 return NotFound();
             }
 
-            return View(deptEmp);
+            return View(department);
         }
 
-        // GET: DeptEmps/Create
+        // GET: Departments/Create
         public IActionResult Create()
         {
-            ViewData["dept_no"] = new SelectList(_context.Departments, "dept_no", "dept_no");
-            ViewData["emp_no"] = new SelectList(_context.Employees, "emp_no", "ci");
             return View();
         }
 
-        // POST: DeptEmps/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Departments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("emp_no,dept_no,from_date,to_date")] DeptEmp deptEmp)
+        public async Task<IActionResult> Create([Bind("dept_no,dept_name")] Department department)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(deptEmp);
+                _context.Add(department);
                 await _context.SaveChangesAsync();
+                TempData["Mensaje"] = "Departamento creado exitosamente.";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["dept_no"] = new SelectList(_context.Departments, "dept_no", "dept_no", deptEmp.dept_no);
-            ViewData["emp_no"] = new SelectList(_context.Employees, "emp_no", "ci", deptEmp.emp_no);
-            return View(deptEmp);
+            return View(department);
         }
 
-        // GET: DeptEmps/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Departments/Edit/5
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var deptEmp = await _context.DeptEmps.FindAsync(id);
-            if (deptEmp == null)
+            var department = await _context.Departments.FindAsync(id);
+            if (department == null)
             {
                 return NotFound();
             }
-            ViewData["dept_no"] = new SelectList(_context.Departments, "dept_no", "dept_no", deptEmp.dept_no);
-            ViewData["emp_no"] = new SelectList(_context.Employees, "emp_no", "ci", deptEmp.emp_no);
-            return View(deptEmp);
+            return View(department);
         }
 
-        // POST: DeptEmps/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Departments/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("emp_no,dept_no,from_date,to_date")] DeptEmp deptEmp)
+        public async Task<IActionResult> Edit(string id, [Bind("dept_no,dept_name")] Department department)
         {
-            if (id != deptEmp.emp_no)
+            if (id != department.dept_no)
             {
                 return NotFound();
             }
@@ -129,12 +120,13 @@ namespace SistemaNomina.Web.Controllers
             {
                 try
                 {
-                    _context.Update(deptEmp);
+                    _context.Update(department);
                     await _context.SaveChangesAsync();
+                    TempData["Mensaje"] = "Departamento actualizado exitosamente.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DeptEmpExists(deptEmp.emp_no))
+                    if (!DepartmentExists(department.dept_no))
                     {
                         return NotFound();
                     }
@@ -145,49 +137,47 @@ namespace SistemaNomina.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["dept_no"] = new SelectList(_context.Departments, "dept_no", "dept_no", deptEmp.dept_no);
-            ViewData["emp_no"] = new SelectList(_context.Employees, "emp_no", "ci", deptEmp.emp_no);
-            return View(deptEmp);
+            return View(department);
         }
 
-        // GET: DeptEmps/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Departments/Delete/5
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var deptEmp = await _context.DeptEmps
-                .Include(d => d.Department)
-                .Include(d => d.Employee)
-                .FirstOrDefaultAsync(m => m.emp_no == id);
-            if (deptEmp == null)
+            var department = await _context.Departments
+                .FirstOrDefaultAsync(m => m.dept_no == id);
+
+            if (department == null)
             {
                 return NotFound();
             }
 
-            return View(deptEmp);
+            return View(department);
         }
 
-        // POST: DeptEmps/Delete/5
+        // POST: Departments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var deptEmp = await _context.DeptEmps.FindAsync(id);
-            if (deptEmp != null)
+            var department = await _context.Departments.FindAsync(id);
+            if (department != null)
             {
-                _context.DeptEmps.Remove(deptEmp);
+                _context.Departments.Remove(department);
+                await _context.SaveChangesAsync();
+                TempData["Mensaje"] = "Departamento eliminado exitosamente.";
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DeptEmpExists(int id)
+        private bool DepartmentExists(string id)
         {
-            return _context.DeptEmps.Any(e => e.emp_no == id);
+            return _context.Departments.Any(e => e.dept_no == id);
         }
     }
 }
