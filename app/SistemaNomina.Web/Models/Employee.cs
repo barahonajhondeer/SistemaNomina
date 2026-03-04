@@ -21,5 +21,14 @@ namespace SistemaNomina.Web.Models
         [Display(Name = "Fecha de Nacimiento")]
         public DateTime birth_date { get; set; }
 
-        [Required(ErrorMessage = "El primer nombre es obligatorio")]
-        [StringLength(50, ErrorMessage = "El nombre no puede exceder los 50 caracteres")]
+        [Display(Name = "Primer Nombre")]
+        public string first_name { get; set; }
+
+        [Required(ErrorMessage = "El primer apellido es obligatorio")]
+        [StringLength(50, ErrorMessage = "El apellido no puede exceder los 50 caracteres")]
+        [Display(Name = "Primer Apellido")]
+        public string last_name { get; set; }
+
+        [Required(ErrorMessage = "El género es obligatorio")]
+        [StringLength(1, ErrorMessage = "El género debe ser M o F")]
+        [RegularExpression("^[MF]$", ErrorMessage = "El género debe ser M (Masculino) o F (Femenino)")]
