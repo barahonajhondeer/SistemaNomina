@@ -180,7 +180,7 @@ namespace SistemaNomina.Web.Controllers
 
             var asignacion = await _context.DeptEmps
                 .Include(de => de.Employee)
-                .Include(de => de.Department)
+                .Include(de => de.Department)cd..
                 .FirstOrDefaultAsync(de => de.emp_no == emp_no &&
                                           de.dept_no == dept_no &&
                                           de.from_date == from_date);
