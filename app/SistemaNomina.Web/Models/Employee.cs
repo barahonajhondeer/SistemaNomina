@@ -32,3 +32,17 @@ namespace SistemaNomina.Web.Models
         [Required(ErrorMessage = "El género es obligatorio")]
         [StringLength(1, ErrorMessage = "El género debe ser M o F")]
         [RegularExpression("^[MF]$", ErrorMessage = "El género debe ser M (Masculino) o F (Femenino)")]
+
+        [Display(Name = "Género")]
+        public string gender { get; set; }
+
+        [Required(ErrorMessage = "La fecha de contratación es obligatoria")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Fecha de Contratación")]
+        public DateTime hire_date { get; set; }
+
+        [Required(ErrorMessage = "El correo es obligatorio")]
+        [EmailAddress(ErrorMessage = "Formato de correo inválido")]
+        [StringLength(100, ErrorMessage = "El correo no puede exceder los 100 caracteres")]
+        [Display(Name = "Correo Electrónico")]
+        public string correo { get; set; }
