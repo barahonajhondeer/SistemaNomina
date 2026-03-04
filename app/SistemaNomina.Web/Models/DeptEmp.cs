@@ -22,3 +22,7 @@ namespace SistemaNomina.Web.Models
         [DataType(DataType.Date)]
         [Display(Name = "Fecha Inicio")]
         public DateTime from_date { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Fecha Fin")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", 
