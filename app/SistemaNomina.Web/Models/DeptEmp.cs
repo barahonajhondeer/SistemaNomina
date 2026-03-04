@@ -16,3 +16,9 @@ namespace SistemaNomina.Web.Models
         [StringLength(10)]
         [Display(Name = "Código de Departamento")]
         public string dept_no { get; set; } = string.Empty;
+
+        [Key]
+        [Column(Order = 3)]
+        [DataType(DataType.Date)]
+        [Display(Name = "Fecha Inicio")]
+        public DateTime from_date { get; set; }
