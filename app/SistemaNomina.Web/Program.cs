@@ -51,3 +51,6 @@ app.MapControllerRoute(
     pattern: "{controller=account}/{action=login}/{id?}");
 
 app.Run();
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+dotnet add package Microsoft.EntityFrameworkCore.Design
