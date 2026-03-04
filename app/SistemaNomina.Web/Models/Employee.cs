@@ -46,3 +46,12 @@ namespace SistemaNomina.Web.Models
         [StringLength(100, ErrorMessage = "El correo no puede exceder los 100 caracteres")]
         [Display(Name = "Correo Electrónico")]
         public string correo { get; set; }
+
+        // Relaciones
+        public virtual ICollection<DeptEmp> DeptEmps { get; set; }
+        public virtual ICollection<Salary> Salaries { get; set; }
+        public virtual ICollection<Title> Titles { get; set; }
+        public virtual ICollection<DeptManager> DeptManagers { get; set; }
+        public virtual User User { get; set; }
+    }
+}
